@@ -30,20 +30,33 @@ useEffect(() => {
 
         // FLATTEN THE DATA: Combine all categories into one array
         const combinedGods = results.flatMap((categoryData, index) => {
+          const categoryName = CATEGORIES[index];
           
-          return categoryData.map((god) => ({
-            ...god,
-            category: CATEGORIES[index], 
-            id: god.id || `${CATEGORIES[index]}-${Math.random()}` 
-          }));
+          return categoryData.map((god) => {
+            // Create a unique ID string
+            const uniqueId = `${categoryName}-${god.id}`;
+
+            return {
+              ...god,
+              category: categoryName,
+              // Use this unique ID for both the React key AND the click handler
+              id: uniqueId, 
+              // Keep the original ID from API
+              originalId: god.id 
+            };
+          });
         });
 
         setAllGods(combinedGods);
+
+        console.log("Sample god data:", combinedGods[0]); 
       } catch (e) {
         setError(e.message);
       } finally {
         setLoading(false);
       }
+
+      
     }
 
     getAPI();
@@ -56,21 +69,22 @@ useEffect(() => {
   return (
     <>
       <section id="center">
-        <h1>Greek Gods Pokedex</h1>
+        <h1>Greek Mythos Dictionary</h1>
 
         {loading ? (
           <p>Loading...</p>
         ) : error ? (
           <p style={{ color: 'red' }}>Error: {error}</p>
         ) : (
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
-            gap: '1.5rem',
-            padding: '1rem'
-          }}>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
+              gap: '1.5rem',
+              padding: '1rem'
+            }}>
             {allGods.map((god) => (
               <GodTile 
+                // Use the unique ID here
                 key={god.id} 
                 god={god} 
                 onClick={handleGodClick} 
