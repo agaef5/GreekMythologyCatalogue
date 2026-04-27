@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import GodTile from './components/GodTile';
 
 import "./App.css";
 
@@ -8,10 +9,10 @@ function App() {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [allGods, setAllGods] = useState([]);
 
   const baseURL = "https://thegreekmythapi.vercel.app/";
-
-  useEffect(() => {
+useEffect(() => {
     async function getAPI() {
       setLoading(true);
       setError(null);
@@ -21,11 +22,23 @@ function App() {
             fetch(`${baseURL}api/${cat}`).then((r) => r.json()),
           ),
         );
+
         const mapped = Object.fromEntries(
           CATEGORIES.map((cat, i) => [cat, results[i]]),
         );
         setData(mapped);
-        CATEGORIES.forEach((cat, i) => console.log(cat, results[i]));
+
+        // FLATTEN THE DATA: Combine all categories into one array
+        const combinedGods = results.flatMap((categoryData, index) => {
+          
+          return categoryData.map((god) => ({
+            ...god,
+            category: CATEGORIES[index], 
+            id: god.id || `${CATEGORIES[index]}-${Math.random()}` 
+          }));
+        });
+
+        setAllGods(combinedGods);
       } catch (e) {
         setError(e.message);
       } finally {
@@ -36,33 +49,35 @@ function App() {
     getAPI();
   }, []);
 
+  const handleGodClick = (id) => {
+    console.log("User clicked god with ID:", id);
+  };
+
   return (
     <>
       <section id="center">
-        <h1>Greek Myth Characters</h1>
+        <h1>Greek Gods Pokedex</h1>
 
         {loading ? (
           <p>Loading...</p>
+        ) : error ? (
+          <p style={{ color: 'red' }}>Error: {error}</p>
         ) : (
-          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-            {CATEGORIES.map((cat) => (
-              <div key={cat} style={{ minWidth: "150px" }}>
-                <h2 style={{ textTransform: "capitalize" }}>{cat}</h2>
-                {data[cat] ? (
-                  <ul>
-                    {data[cat].slice(0, 5).map((item, i) => (
-                      <li key={i}>{item.name ?? JSON.stringify(item)}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p style={{ color: "gray" }}>—</p>
-                )}
-              </div>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
+            gap: '1.5rem',
+            padding: '1rem'
+          }}>
+            {allGods.map((god) => (
+              <GodTile 
+                key={god.id} 
+                god={god} 
+                onClick={handleGodClick} 
+              />
             ))}
           </div>
         )}
-
-        {error && <p style={{ color: "red" }}>Error: {error}</p>}
       </section>
 
       <div className="ticks"></div>
