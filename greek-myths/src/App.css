@@ -1,3 +1,4 @@
+/* God Catalog page */
 .god-catalog {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -17,6 +18,7 @@
     margin: 0 auto;
   }
 
+  /* General styles */
   .base {
     width: 170px;
     position: relative;
