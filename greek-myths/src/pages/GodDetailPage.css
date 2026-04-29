@@ -35,9 +35,7 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border: 1px solid #eee;
   max-width: 680px;
-  /* margin: -48px auto 40px; */
   position: relative;
-  /* z-index: 1; */
   overflow: hidden;
 }
 
