@@ -102,6 +102,7 @@ function CatalogPage() {
               }}
             >
               <button
+                className="nextprev-button"
                 onClick={() => setCurrentPage((p) => p - 1)}
                 disabled={currentPage === 1}
               >
@@ -111,6 +112,7 @@ function CatalogPage() {
                 {currentPage} / {totalPages}
               </span>
               <button
+                className="nextprev-button"
                 onClick={() => setCurrentPage((p) => p + 1)}
                 disabled={currentPage === totalPages}
               >

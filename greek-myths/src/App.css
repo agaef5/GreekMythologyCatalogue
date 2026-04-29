@@ -8,6 +8,18 @@
   padding: 1rem;
 }
 
+.nextprev-button {
+  background-color: white;
+  padding: 0.5rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nextprev-button:hover {
+  transform: translateY(-1px);
+  border-color: #ffd700; /* Gold accent */
+}
+
 .hero {
   position: relative;
 
