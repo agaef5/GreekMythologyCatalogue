@@ -5,7 +5,7 @@ import "./App.css";
 import CatalogPage from "./pages/CatalogPage";
 import AboutPage from "./pages/AboutPage";
 import GodDetailPage from "./pages/GodDetailPage";
-import Navbar from "./components/NavBar";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
